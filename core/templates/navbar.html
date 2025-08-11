@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: wheat;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><h3>CapitalBank</h3></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+         <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'deposit_money' %}">Deposit</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'withdraw_money' %}">Withdraw</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'transaction_report' %}">Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'transfer_money' %}">Transfer</a>
+          </li> 
+          <!-- Dropdown for Loan -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Loan
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'loan_list' %}">Loan Report</a></li>
+              <li><a class="dropdown-item" href="{% url 'loan_request' %}">Loans</a></li>
+            </ul>
+          </li>
+        {% endif %}
+      </ul>
+
+      <!-- Right Side: User Info -->
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <h3 class="nav-link">Welcome, {{ request.user.username }} (Balance: {{ request.user.account.balance }} $)</h5>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

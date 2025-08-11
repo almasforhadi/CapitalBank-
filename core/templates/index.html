@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+  <div class="nav_box">
+    <div class="home_box">
+        <h1 style="color:white"><b>Welcome to CpaitalBank</b></h1>
+        <p style="color:white">CapitalBank is a modern, secure, and user-friendly platform built to simplify everyday banking operations. From creating and managing customer accounts to handling deposits, withdrawals, and balance inquiries — every task is streamlined to provide a smooth experience for both users and administrators.Designed with clarity and efficiency in mind, CapitalBank allows users to perform essential banking functions with ease, while administrators can manage records and monitor transactions effortlessly. Whether you're a student learning about banking systems or an organization managing small-scale banking needs, CapitalBank is the perfect solution.With its clean interface, responsive design, and core functionality, this platform brings the essence of banking into a digital environment — making financial management simple, transparent, and accessible to all.</p>
+        <a class="btn btn-primary" href="{% url 'register' %}">Register</a>
+    </div>
+    <div class="home_box">
+        <img class="bank_img" src="{% static 'images/bank_img.jpg'%}" alt="bank-img">
+    </div>
+  </div>
+    
+{% endblock %}

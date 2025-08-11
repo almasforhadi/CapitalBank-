@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Transaction Report | CapitalBank</title>
+{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+    <div class="report-container">
+        <div class="report-header text-center mb-4">
+            <h3 style="font-weight: bold;">Transaction Report</h3>
+        </div>
+
+        <div class="report-table">
+            <p><strong>Account:</strong> {{ account }}</p>
+
+            <!-- Responsive Filter Form -->
+            <form method="get" class="row g-2 justify-content-center mb-3">
+                <div class="col-12 col-md-4">
+                    <input type="date" name="start_date" class="form-control" placeholder="From: dd-mm-yyyy"
+                        value="{{ request.GET.start_date }}">
+                </div>
+                <div class="col-12 col-md-4">
+                    <input type="date" name="end_date" class="form-control" placeholder="To: dd-mm-yyyy"
+                        value="{{ request.GET.end_date }}">
+                </div>
+                <div class="col-12 col-md-2">
+                    <button type="submit" class="btn btn-dark w-100">Filter</button>
+                </div>
+            </form>
+
+            <!-- Responsive Table -->
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><h5>Serial</h5></th>
+                            <th><h5>Date</h5></th>
+                            <th><h5>Transaction type</h5></th>
+                            <th><h5>Amount</h5></th>
+                            <th><h5>Balance after transaction</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in report_list %}
+                        <tr>
+                            <td><h5><b>{{ forloop.counter }}</b></h5></td>
+                            <td><h5>{{ transaction.time_stamp|date:"Y-m-d H:i" }}</h5></td>
+                            {% if transaction.get_transaction_type_display == 'Deposit' %}
+                                <td><h5 style="color:green">{{ transaction.get_transaction_type_display }}</h5></td>
+                            {% elif transaction.get_transaction_type_display == 'Withdrawal' %}
+                                <td><h5 style="color:red">{{ transaction.get_transaction_type_display }}</h5></td>
+                            {% else %}
+                                <td><h5 style="color:black">{{ transaction.get_transaction_type_display }}</h5></td>
+                            {% endif %}
+                            <td><h5>${{ transaction.amount }}</h5></td>
+                            <td><h5>${{ transaction.balance_after_transaction }}</h5></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center"><p>No transactions found.</p></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center mt-3" style="background-color:#2B3749; color:white; padding:10px; border-radius:5px;">
+            <strong>Current Balance ${{ request.user.account.balance }}</strong>
+        </div>
+    </div>
+</div>
+{% endblock %}
