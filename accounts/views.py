@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, UpdateView
 from .forms import UserRegistrationForm,  UserUpdateForm, User
-from django.contrib.auth.forms import AuthenticationForm , PasswordChangeForm, SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout ,update_session_auth_hash
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib import messages
+
+from django.core.mail import send_mail
+
 
 
 
@@ -64,3 +69,19 @@ def user_login(request):
 def user_logout(request): 
     logout(request)
     return redirect('login')
+
+
+class ChangePassView(LoginRequiredMixin,PasswordChangeView):
+    template_name = 'accounts/change_password.html'
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        send_mail(
+            subject="Password Changed Successfully",
+            message="Hello, your password has been successfully changed.",
+            from_email=None,  # Uses DEFAULT_FROM_EMAIL from settings.py
+            recipient_list=[self.request.user.email],
+            fail_silently=False,
+        )
+        messages.success(self.request, "Your password is successfully changed.")
+        return super().form_valid(form)

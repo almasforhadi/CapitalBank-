@@ -99,22 +99,22 @@ WSGI_APPLICATION = 'capital_bank.wsgi.application'
 # }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env("DB_NAME"),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT"),
-#     }
-# }
-
 DATABASES = {
-'default': dj_database_url.config(
-default='postgresql://capitalbank_db_user:QCuZOBSqvXXQNLpPOtxWaUbhTX8lvclu@dpg-d2clq7ruibrs738k9vu0-a.oregon-postgres.render.com/capitalbank_db',
-)
-} 
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
+    }
+}
+
+# DATABASES = {
+# 'default': dj_database_url.config(
+# default='postgresql://capitalbank_db_user:QCuZOBSqvXXQNLpPOtxWaUbhTX8lvclu@dpg-d2clq7ruibrs738k9vu0-a.oregon-postgres.render.com/capitalbank_db',
+# )
+# } 
 
 
 
@@ -172,3 +172,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env("Email")
 EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+
+DEFAULT_FROM_EMAIL = 'almasforhasi1999@gmail.com'

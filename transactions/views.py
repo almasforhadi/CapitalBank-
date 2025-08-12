@@ -210,4 +210,10 @@ class TransferMoneyView(TransactionCreateMixin):
             self.request,
             f'Successfully transferred {form.cleaned_data["amount"]}$ to account {form.cleaned_data["to_account_number"]}({to_user.username})'
         )
+
+        amount = form.cleaned_data["amount"]
+
+        send_transaction_email(self.request.user, amount, "Transfer Confirmation", "transactions/transfer_money_email.html")
+        send_transaction_email(to_user, amount, "You've Received Money", "transactions/email_receiver.html")
+        
         return super().form_valid(form)
