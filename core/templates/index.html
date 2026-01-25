@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<section class="hero-section">
+  <div class="nav_box">
+    <!-- Left Side -->
+    <div class="home_box glass-box fade-in-left">
+      <h1><b>Welcome to CapitalBank</b></h1>
+      <p>
+        CapitalBank is a modern, secure, and user-friendly platform built to simplify everyday banking operations. 
+        From managing accounts to handling deposits, withdrawals, and transfers — 
+        everything is designed for <span class="highlight">ease, security, and efficiency</span>.  
+      </p>
+      <a class="btn premium-btn mt-3" href="{% url 'register' %}">🚀 Get Started</a>
+    </div>
+
+    <!-- Right Side -->
+    <div class="home_box glass-box fade-in-right">
+      <img class="bank_img" src="{% static 'images/bank_img.jpg' %}" alt="bank-img">
+    </div>
+  </div>
+</section>
+{% endblock %}

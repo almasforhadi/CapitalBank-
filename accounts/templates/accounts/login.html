@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+<div class="parent_div">
+    <form method="POST" style="width:80%;margin:auto">
+        {% csrf_token %}
+        <h2 style="text-align:center; margin-bottom: 20px;">Login</h2>
+        <!--{{form | crispy}}-->
+            <div class="col-12">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div>
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" style="width:100%" class="btn btn-success">Submit</button>
+           </div>
+      </div>
+    </form>
+</div>
+{% endblock %}
+         

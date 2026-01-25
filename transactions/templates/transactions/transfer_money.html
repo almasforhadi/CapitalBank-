@@ -1,0 +1,20 @@
+<!-- templates/transfer_money.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h3>Transfer Money</h3>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {{ form.amount.label_tag }} {{ form.amount }}
+  {% if form.to_account_number %}
+    {{ form.to_account_number.label_tag }} {{ form.to_account_number }}
+  {% endif %}
+  <button type="submit">Submit</button>
+</form>
+
+</div>
+{% endblock %}

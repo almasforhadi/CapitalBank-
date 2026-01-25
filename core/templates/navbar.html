@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark premium-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">
+      <i class="fas fa-university"></i> CapitalBank
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+      data-bs-target="#navbarContent" aria-controls="navbarContent" 
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Left Side -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+        
+        {% if request.user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'deposit_money' %}"><i class="fas fa-coins"></i> Deposit</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'withdraw_money' %}"><i class="fas fa-wallet"></i> Withdraw</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'transaction_report' %}"><i class="fas fa-file-invoice"></i> Report</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'transfer_money' %}"><i class="fas fa-exchange-alt"></i> Transfer</a></li>
+          
+          <!-- Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-hand-holding-usd"></i> Loan
+            </a>
+            <ul class="dropdown-menu shadow-lg rounded-3">
+              <li><a class="dropdown-item" href="{% url 'loan_list' %}">Loan Report</a></li>
+              <li><a class="dropdown-item" href="{% url 'loan_request' %}">Apply Loan</a></li>
+            </ul>
+          </li>
+        {% endif %}
+      </ul>
+
+      <!-- Right Side -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <div class="balance-box">
+              Welcome, <strong>{{ request.user.username }}</strong>
+              <small>Balance: {{ request.user.account.balance }} $</small>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}"><i class="fas fa-user-circle"></i> Profile</a></li>
+          <li class="nav-item"><a class="nav-link logout-btn" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Register</a></li>
+          <li class="nav-item"><a class="nav-link login-btn" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Loan Requests | CapitalBank</title>
+{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+    <div class="loan-container">
+        <div class="loan-header text-center mb-4">
+            <h4 style="font-weight: bold;">Your Loan Report</h4>
+        </div>
+
+        <div class="loan-table table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><h5>Serial</h5></th>
+                        <th><h5>Date</h5></th>
+                        <th><h5>Amount</h5></th>
+                        <th><h5>Loan Approved</h5></th>
+                        <th><h5>Action</h5></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr>
+                        <td><h5>{{ forloop.counter }}</h5></td>
+                        <td><h5>{{ loan.time_stamp|date:"Y-m-d H:i" }}</h5></td>
+                        <td><h5 style="color:green">${{ loan.amount }}</h5></td>
+                        <td>
+                            {% if loan.loan_approve %}
+                                <h5 style="color:green">True</h5>
+                            {% else %}
+                                <h5 style="color:red">False</h5>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if loan.loan_approve %}
+                                <h5 style="color:green">Approved</h5>
+                            {% else %}
+                                <h5 style="color:red">Loan Pending</h5>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No loan requests yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
