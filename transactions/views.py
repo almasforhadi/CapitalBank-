@@ -63,6 +63,7 @@ class DepositMoneyView(TransactionCreateMixin):
           account.balance += amount  # user er kache ase 500tk, depost korlo 1000tk.Total ac-balance = 1500
           account.save(update_fields = ['balance'])
 
+          form.instance.account = account
           form.instance.transaction_type = DEPOSIT
           form.instance.balance_after_transaction = account.balance  # set balance after transaction
 
@@ -87,6 +88,7 @@ class WithdrawMoneyView(TransactionCreateMixin):
           account.balance -= amount  # user er kache ase 1500tk, withdraw korlo 1000tk.Total ac-balance = 500
           account.save(update_fields = ['balance'])
 
+          form.instance.account = account
           form.instance.transaction_type = WITHDRAWAL
           form.instance.balance_after_transaction = account.balance  # ✅ set balance after transaction
 
@@ -111,6 +113,10 @@ class LoanRequestView(TransactionCreateMixin):
           if current_loan_count >= 3:
                return HttpResponse("You have crossed your limits.")
           
+          form.instance.account = self.request.user.account
+          form.instance.transaction_type = LOAN
+          form.instance.balance_after_transaction = self.request.user.account.balance  # set balance after transaction
+
           messages.success(self.request,f'Your loan request ${amount} is sent.Wait for response.')
           send_transaction_email(self.request.user, amount, "Loan Request messages", "transactions/loan_email.html")
           return super().form_valid(form)
@@ -205,9 +211,37 @@ class TransferMoneyView(TransactionCreateMixin):
         return {'transaction_type': TRANSFER}
 
     def form_valid(self, form):
-        to_user = form.to_account.user  # get recipient's user object
+        sender_account = self.request.user.account
+        receiver_account = form.cleaned_data['to_account']
+        amount = form.cleaned_data['amount']
+
+        # ❌ Prevent self transfer
+        if sender_account == receiver_account:
+            messages.error(self.request, "You cannot transfer money to your own account.")
+            return redirect('transfer_money')
+
+        # ❌ Insufficient balance check
+        if sender_account.balance < amount:
+            messages.error(self.request, "Insufficient balance.")
+            return redirect('transfer_money')
+
+        # ✅ Update balances
+        sender_account.balance -= amount
+        receiver_account.balance += amount
+
+        sender_account.save(update_fields=['balance'])
+        receiver_account.save(update_fields=['balance'])
+
+        # ✅ Sender transaction record
+        form.instance.account = sender_account
+        form.instance.transaction_type = TRANSFER
+        form.instance.balance_after_transaction = sender_account.balance
+
+        # ✅ Success message
         messages.success(
             self.request,
-            f'Successfully transferred {form.cleaned_data["amount"]}$ to account {form.cleaned_data["to_account_number"]}({to_user.username})'
+            f'Successfully transferred {amount}$ to {receiver_account.user.username}'
         )
+
         return super().form_valid(form)
+
